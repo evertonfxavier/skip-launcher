@@ -1,0 +1,10 @@
+{
+  "name": "Skip Launcher",
+  "author": "Everton Xavier",
+  "flags": [],
+  "api_version": 1,
+  "publish": {
+    "tags": ["launcher", "controller", "settings"],
+    "description": "Start games that open a Windows launcher window straight into the game, and change that window's settings from the Deck with a controller."
+  }
+}

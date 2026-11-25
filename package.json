@@ -1,0 +1,37 @@
+{
+  "name": "skip-launcher",
+  "version": "0.2.1",
+  "description": "Decky plugin that starts games straight into the game, skipping their Windows launcher window, and keeps that window's settings in the plugin",
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "build": "rollup -c",
+    "build:zip": "bash scripts/build-zip.sh",
+    "watch": "rollup -c -w",
+    "test": "python3 -m unittest discover -s tests",
+    "test:ui": "node --test tests/ui/*.test.mjs"
+  },
+  "keywords": ["decky", "decky-plugin", "steam-deck", "launcher", "controller"],
+  "author": "Everton Xavier",
+  "devDependencies": {
+    "@decky/rollup": "^1.0.2",
+    "@decky/ui": "^4.11.4",
+    "@rollup/rollup-linux-x64-musl": "^4.53.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.1.11",
+    "@types/webpack": "^5.28.5",
+    "rollup": "^4.53.3",
+    "typescript": "~5.9.3"
+  },
+  "dependencies": {
+    "@decky/api": "^1.1.3",
+    "react-icons": "^5.3.0",
+    "tslib": "^2.7.0"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": ["react", "react-dom"]
+    }
+  }
+}
