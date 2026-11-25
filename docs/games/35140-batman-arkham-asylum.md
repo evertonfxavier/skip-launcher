@@ -7,7 +7,7 @@
 | Launcher skipped | `Binaries/BmLauncher.exe` -> `Binaries/ShippingPC-BmGame.exe` |
 | Settings file | `UserEngine.ini` (UTF-16 LE with BOM) in the Proton prefix |
 | Profile | `profiles/batman_aa.py`, revision 1 |
-| Status | skip proven by hand on the Deck (2026-11-25); plugin v0.1.0 installed and the panel, the skip toggle and the settings (resolution, anti-aliasing, subtitles read back from `UserEngine.ini`) confirmed working by the user |
+| Status | skip proven by hand on the Deck (2026-11-25); the panel, the skip toggle and the settings (resolution, anti-aliasing, subtitles read back from `UserEngine.ini`) confirmed working by a player |
 | Summary | Starts Batman straight into the game, without the mouse-only launcher window, and lets you change the launcher's video, detail, PhysX and subtitle settings from the plugin with a controller. |
 | Support level | confirmed |
 

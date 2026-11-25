@@ -1,0 +1,215 @@
+name: Build plugin
+
+# Every push / PR: tests + zip. Every push to main is released, so the release never lags behind the code:
+#   - package.json carries a version with no release yet  -> that version is released (a manual bump still works)
+#   - its release exists at another commit                -> CI bumps the patch (0.2.1 -> 0.2.2), builds the zip
+#                                                            with it, commits "chore(release): vX.Y.Z [skip ci]"
+#                                                            to main and publishes the release at that commit
+#   - re-run of the commit that was released              -> nothing to do
+# The tested zip is the one published. Nothing to tag or bump by hand (scripts/ci_version.py has the rules).
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  # a push run may be publishing a release: only superseded pull-request runs are cancelled
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      bump: ${{ steps.ver.outputs.bump }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Read and validate the version
+        id: meta
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "package.json version '$VERSION' is not semver (X.Y.Z or X.Y.Z-suffix)" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "package.json declares v$VERSION"
+
+      - name: Decide the version to release
+        id: ver
+        env:
+          DECLARED: ${{ steps.meta.outputs.version }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" != "pull_request" && "$GITHUB_REF" == "refs/heads/main" ]]; then
+            git ls-remote --tags origin > "$RUNNER_TEMP/remote-tags.txt"
+            # no pipe here: a failing script must fail the step (the default shell has no pipefail)
+            python3 scripts/ci_version.py decide --version "$DECLARED" --head "$GITHUB_SHA" \
+              --tags "$RUNNER_TEMP/remote-tags.txt" > "$RUNNER_TEMP/version.txt"
+          else
+            printf 'version=%s\nbump=false\n' "$DECLARED" > "$RUNNER_TEMP/version.txt"
+          fi
+          cat "$RUNNER_TEMP/version.txt"
+          cat "$RUNNER_TEMP/version.txt" >> "$GITHUB_OUTPUT"
+
+      - name: Stamp the new version in package.json and CHANGELOG.md (the release job commits it)
+        if: steps.ver.outputs.bump == 'true'
+        run: |
+          python3 scripts/ci_version.py stamp --version "${{ steps.ver.outputs.version }}" --date "$(date -u +%F)"
+          echo "Building Skip Launcher v${{ steps.ver.outputs.version }} (patch bumped automatically)"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Backend tests
+        run: python3 -W error::ResourceWarning -m unittest discover -s tests -v
+
+      - name: UI logic tests
+        run: node --test tests/ui/*.test.mjs
+
+      - name: Type-check the UI
+        run: npx tsc --noEmit -p .
+
+      - name: Build plugin ZIP
+        env:
+          CI: true
+        run: bash scripts/ci-build-zip.sh
+
+      - name: Upload plugin ZIP artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: skip-launcher-plugin-zip
+          path: |
+            out/*.zip
+          if-no-files-found: error
+
+      - name: Check the layout of the ZIP
+        run: |
+          PLUGIN_ZIP="out/skip-launcher-v${{ steps.ver.outputs.version }}.zip"
+          test -f "$PLUGIN_ZIP"
+          mkdir -p out/extracted
+          unzip -q "$PLUGIN_ZIP" -d out/extracted
+          find out/extracted -path '*/dist/index.js' | grep -q .
+          find out/extracted -name plugin.json | grep -q .
+          find out/extracted -name main.py | grep -q .
+          find out/extracted -path '*/py_modules/skip_launcher/engine.py' | grep -q .
+          find out/extracted -path '*/py_modules/skip_launcher/profiles/batman_aa.py' | grep -q .
+          # the version inside the zip must be the one being released
+          test "$(unzip -p "$PLUGIN_ZIP" 'Skip Launcher/package.json' | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")" = "${{ steps.ver.outputs.version }}"
+
+      - name: Upload extracted folder
+        uses: actions/upload-artifact@v7
+        with:
+          name: skip-launcher-plugin
+          path: out/extracted/
+          if-no-files-found: error
+
+  release:
+    # only on main, only after tests and build passed, never for pull requests
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ needs.build.outputs.version }}
+      BUMP: ${{ needs.build.outputs.bump }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download the tested ZIP
+        uses: actions/download-artifact@v8
+        with:
+          name: skip-launcher-plugin-zip
+          path: dist
+
+      - name: Commit the version bump to main
+        id: target
+        run: |
+          TARGET="$GITHUB_SHA"
+          if [[ "$BUMP" == "true" ]]; then
+            if gh release view "v${VERSION}" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+              echo "Release v${VERSION} already exists: nothing to bump."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            python3 scripts/ci_version.py stamp --version "$VERSION" --date "$(date -u +%F)"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package.json CHANGELOG.md
+            git commit -m "chore(release): v${VERSION} [skip ci]"
+            # fast-forward only: if main moved while this run was going, fail here (nothing is published)
+            # and let the run of the newer commit release both
+            git push origin HEAD:refs/heads/main
+            TARGET="$(git rev-parse HEAD)"
+          fi
+          echo "sha=$TARGET" >> "$GITHUB_OUTPUT"
+
+      - name: Publish the release for this version
+        if: steps.target.outputs.skip != 'true'
+        env:
+          TARGET: ${{ steps.target.outputs.sha }}
+        run: |
+          TAG="v${VERSION}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $TAG already exists: nothing to publish."
+            exit 0
+          fi
+
+          ZIP="skip-launcher-v${VERSION}.zip"
+          test -f "dist/$ZIP"
+          (cd dist && sha256sum "$ZIP" > "$ZIP.sha256")
+
+          cat > notes.md <<EOF
+          ## Skip Launcher v${VERSION}
+
+          Decky Loader plugin that starts games straight into the game, skipping their Windows launcher window, and moves that window's settings into the plugin so a controller can reach them.
+
+          ### Install
+
+          1. Download \`${ZIP}\` below (optional: check it against \`${ZIP}.sha256\`).
+          2. On the Steam Deck: Quick Access, Decky, Settings, turn **Developer Mode** on.
+          3. **Install Plugin from ZIP** and pick the file.
+
+          ### Requirements
+
+          - [Decky Loader](https://github.com/SteamDeckHomebrew/decky-loader)
+          - A supported game, see the [README](https://github.com/${GITHUB_REPOSITORY}#supported-games)
+
+          Unofficial tool, not affiliated with Valve or the game publishers. The plugin never modifies a game's files: it changes the game's launch option in Steam and, where a launcher kept settings, only those settings (recorded first, so they can be put back).
+
+          ### Changes
+          EOF
+
+          FLAGS=""
+          if [[ "$VERSION" == *-* ]]; then FLAGS="--prerelease"; fi
+
+          gh release create "$TAG" "dist/$ZIP" "dist/$ZIP.sha256" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$TARGET" \
+            --title "Skip Launcher $TAG" \
+            --notes-file notes.md \
+            --generate-notes \
+            $FLAGS
+          echo "Published $TAG"

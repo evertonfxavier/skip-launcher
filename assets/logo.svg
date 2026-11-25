@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="t d">
+  <title id="t">Skip Launcher</title>
+  <desc id="d">A launcher window drawn faint and dotted, with a bold skip-forward arrow passing over it.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#262B3D"/>
+      <stop offset="1" stop-color="#151822"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC247"/>
+      <stop offset="1" stop-color="#FF8A3D"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+  <rect x="3" y="3" width="250" height="250" rx="53" fill="none" stroke="#FFFFFF" stroke-opacity=".08" stroke-width="2"/>
+
+  <!-- the launcher window the player no longer has to click through -->
+  <g opacity=".62">
+    <rect x="38" y="52" width="150" height="112" rx="14" fill="#1B2030" stroke="#7F8AA3" stroke-width="5" stroke-dasharray="3 9" stroke-linecap="round"/>
+    <path d="M38 82 H188" stroke="#7F8AA3" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="56" cy="67" r="5" fill="#D65C5C"/>
+    <circle cx="72" cy="67" r="5" fill="#D9B35C"/>
+    <circle cx="88" cy="67" r="5" fill="#5CB87A"/>
+    <rect x="56" y="98" width="84" height="9" rx="4.5" fill="#46506E"/>
+    <rect x="56" y="116" width="58" height="9" rx="4.5" fill="#46506E"/>
+    <rect x="132" y="136" width="44" height="18" rx="8" fill="#46506E"/>
+  </g>
+
+  <!-- skip: two arrows and a bar, drawn over it with a dark halo so they stay legible -->
+  <g stroke="#151822" stroke-width="12" stroke-linejoin="round" paint-order="stroke" fill="url(#arrow)">
+    <path d="M104 118 L104 202 L160 160 Z"/>
+    <path d="M152 118 L152 202 L208 160 Z"/>
+    <rect x="214" y="118" width="14" height="84" rx="5"/>
+  </g>
+</svg>

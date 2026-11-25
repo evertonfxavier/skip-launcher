@@ -4,7 +4,12 @@
   "flags": [],
   "api_version": 1,
   "publish": {
-    "tags": ["launcher", "controller", "settings"],
-    "description": "Start games that open a Windows launcher window straight into the game, and change that window's settings from the Deck with a controller."
+    "tags": [
+      "launcher",
+      "controller",
+      "settings"
+    ],
+    "description": "Start games that open a Windows launcher window straight into the game, and change that window's settings from the Deck with a controller.",
+    "image": "https://raw.githubusercontent.com/evertonfxavier/skip-launcher/main/assets/logo.png"
   }
 }

@@ -6,7 +6,7 @@
 | Steam appid / install dir | 12150 / `Max Payne 2 The Fall of Max Payne` (build 252035, internal library) |
 | Skip | launch option `%command% -nodialog`: **proven by hand on the Deck (2026-11-25)**, the game started straight in |
 | Settings | Wine registry like Max Payne 1, key names **read from the real `user.reg`** after the game ran; profile `profiles/max_payne_2.py`, revision 2: resolution, auto-aim, auto weapon select, bullet time aid, tips, subtitles |
-| Status | plugin 0.2.0 installed on the Deck (2026-11-25); the panel and the settings are **not tested in the plugin UI yet** |
+| Status | skip proven by hand on the Deck; settings keys read from the real registry; the plugin panel is installed (v0.2.x) but changing a setting and seeing the game obey it is **not confirmed yet** |
 | Summary | Starts Max Payne 2 straight into the game, without its startup dialog, and lets you change the resolution and the gameplay options (auto-aim, auto weapon select, bullet time aid, tips, subtitles) from the plugin with a controller. |
 | Support level | partly confirmed |
 

@@ -17,11 +17,13 @@ Support level (a row of every game page, exactly one of these):
 import argparse
 import re
 import sys
+import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "py_modules"))
 
+REPO_URL = "https://github.com/evertonfxavier/skip-launcher"
 LEVELS = {
     "confirmed": {"icon": "✅", "en": "confirmed"},
     "partly confirmed": {"icon": "🟡", "en": "partly confirmed"},
@@ -72,6 +74,10 @@ def settings_by_group(profile):
     return out
 
 
+def issue_link(template, title):
+    return "%s/issues/new?template=%s&title=%s" % (REPO_URL, template, urllib.parse.quote_plus(title))
+
+
 def render_supported_games(root=ROOT):
     games = collect(root)
     out = [
@@ -83,13 +89,17 @@ def render_supported_games(root=ROOT):
         "needs its own *profile*. This is the complete list of games the plugin can start without their launcher window "
         "today (%d). It is generated from the code, so it is always in step with the plugin." % len(games),
         "",
+        "> Playing a game that is not listed? [Ask for it](%s). Want to add it yourself? Start with the "
+        "[guide to adding a game](docs/adding-a-game.md)." % issue_link("game_request.yml", "[Game request] "),
+        "",
         "## How much can you trust each game?",
         "",
         "| Level | Meaning |",
         "|-------|---------|",
         "| %s **confirmed** | Someone played the game on a Steam Deck and saw it start straight into the game and the settings work |" % LEVELS["confirmed"]["icon"],
         "| %s **partly confirmed** | Some of it was seen on the Deck; the rest is verified by tests only |" % LEVELS["partly confirmed"]["icon"],
-        "| %s **unconfirmed** | Verified by tests and on the real files, but nobody has reported the result on a Deck yet |" % LEVELS["unconfirmed"]["icon"],
+        "| %s **unconfirmed** | Verified by tests and on the real files, but nobody has reported the result on a Deck yet. "
+        "[Be the first](%s) |" % (LEVELS["unconfirmed"]["icon"], issue_link("deck_report.yml", "[Deck report] ")),
         "",
         "Whatever the level: no game file is touched to skip the launcher (only the launch option of the game in Steam "
         "changes, and turning the switch off removes just what the plugin added), nothing is written while the game is "
@@ -131,13 +141,15 @@ def render_supported_games(root=ROOT):
         out.append("- **Settings file:** " + where % p.config_rel.split("/")[-1])
         if g["unverified"]:
             out.append("- **Not confirmed yet:** " + " ".join(u[:1].upper() + u[1:].rstrip(".") + "." for u in g["unverified"]))
-        out += ["- **Links:** [Steam store](https://store.steampowered.com/app/%s) · [technical notes](docs/games/%s)" % (
-            g["appid"], g["page"]), "", "</details>", ""]
+        out += ["- **Links:** [Steam store](https://store.steampowered.com/app/%s) · [technical notes](docs/games/%s) · "
+                "[report how it worked on your Deck](%s)" % (
+                    g["appid"], g["page"], issue_link("deck_report.yml", "[Deck report] %s" % g["name"])), "", "</details>", ""]
     out += [
         "## Not on the list?",
         "",
-        "Only games whose launcher window can be skipped without touching the game's files are accepted. Games with "
-        "anti-cheat or online ranked play are out of scope.",
+        "- **Request it:** [open a game request](%s). Say what window opens before the game and whether it needs the mouse." % issue_link("game_request.yml", "[Game request] "),
+        "- **Add it:** [docs/adding-a-game.md](docs/adding-a-game.md) walks through it, and `python3 tools/scaffold_game.py` creates the starting files.",
+        "- **Only offline games, please.** Games with anti-cheat or online ranked play are out of scope: changing how they start can get accounts banned.",
         "",
     ]
     return "\n".join(out)

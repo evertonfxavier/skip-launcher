@@ -1,6 +1,6 @@
 """Reads and changes the settings a game's launcher window used to hold.
 
-Safety, in the same spirit as the Button Glyphs engine:
+Safety (the full list is in docs/safety-rules.md):
   * nothing is written while the game is running, installing or updating;
   * the ini file is edited in place (only the lines of the chosen option), through a temp file, fsync and an atomic
     replace, so a power cut leaves either the old or the new file, never half of one;

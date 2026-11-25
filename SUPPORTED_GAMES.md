@@ -4,13 +4,15 @@
 
 Skip Launcher works **game by game**: every launcher window keeps its choices somewhere different, so each game needs its own *profile*. This is the complete list of games the plugin can start without their launcher window today (3). It is generated from the code, so it is always in step with the plugin.
 
+> Playing a game that is not listed? [Ask for it](https://github.com/evertonfxavier/skip-launcher/issues/new?template=game_request.yml&title=%5BGame+request%5D+). Want to add it yourself? Start with the [guide to adding a game](docs/adding-a-game.md).
+
 ## How much can you trust each game?
 
 | Level | Meaning |
 |-------|---------|
 | ✅ **confirmed** | Someone played the game on a Steam Deck and saw it start straight into the game and the settings work |
 | 🟡 **partly confirmed** | Some of it was seen on the Deck; the rest is verified by tests only |
-| ⚪ **unconfirmed** | Verified by tests and on the real files, but nobody has reported the result on a Deck yet |
+| ⚪ **unconfirmed** | Verified by tests and on the real files, but nobody has reported the result on a Deck yet. [Be the first](https://github.com/evertonfxavier/skip-launcher/issues/new?template=deck_report.yml&title=%5BDeck+report%5D+) |
 
 Whatever the level: no game file is touched to skip the launcher (only the launch option of the game in Steam changes, and turning the switch off removes just what the plugin added), nothing is written while the game is running, installing or updating, and **Put the original settings back** restores every value the plugin changed, key by key.
 
@@ -38,7 +40,7 @@ Starts Batman straight into the game, without the mouse-only launcher window, an
 - **Game settings:** Subtitles
 - **Settings file:** `UserEngine.ini` (inside the game's Proton prefix)
 - **Not confirmed yet:** That the game itself shows every changed value (only resolution, anti-aliasing and subtitles were changed and read back from the file); the Original button was not tested in this round. A game that has never been opened (no `UserEngine.ini`): the plugin only says to open it once and never creates the file.
-- **Links:** [Steam store](https://store.steampowered.com/app/35140) · [technical notes](docs/games/35140-batman-arkham-asylum.md)
+- **Links:** [Steam store](https://store.steampowered.com/app/35140) · [technical notes](docs/games/35140-batman-arkham-asylum.md) · [report how it worked on your Deck](https://github.com/evertonfxavier/skip-launcher/issues/new?template=deck_report.yml&title=%5BDeck+report%5D+Batman%3A+Arkham+Asylum+GOTY+Edition)
 
 </details>
 
@@ -53,7 +55,7 @@ Starts Max Payne straight into the game, without its startup dialog, and lets yo
 - **Game settings:** Auto-aim, Auto weapon select, Bullet time aid, Crosshair, Tips
 - **Settings file:** the Windows registry of the game's Proton prefix (`user.reg`)
 - **Not confirmed yet:** That the game applies a resolution written by the plugin (the player proved the skip, not the settings); the audio, gamma, LOD and driver values are not offered because their scale is not known. That Wine keeps the edited `user.reg` (the plugin edits it only when no process of the prefix is alive).
-- **Links:** [Steam store](https://store.steampowered.com/app/12140) · [technical notes](docs/games/12140-max-payne.md)
+- **Links:** [Steam store](https://store.steampowered.com/app/12140) · [technical notes](docs/games/12140-max-payne.md) · [report how it worked on your Deck](https://github.com/evertonfxavier/skip-launcher/issues/new?template=deck_report.yml&title=%5BDeck+report%5D+Max+Payne)
 
 </details>
 
@@ -68,10 +70,12 @@ Starts Max Payne 2 straight into the game, without its startup dialog, and lets 
 - **Game settings:** Auto-aim, Auto weapon select, Bullet time aid, Tips, Subtitles
 - **Settings file:** the Windows registry of the game's Proton prefix (`user.reg`)
 - **Not confirmed yet:** That the game applies a resolution written by the plugin (the player proved the skip, not the settings). The crosshair (`Crosshair Index`, values unknown) and the video quality values (gamma, LOD, bits per pixel, driver) are not offered.
-- **Links:** [Steam store](https://store.steampowered.com/app/12150) · [technical notes](docs/games/12150-max-payne-2.md)
+- **Links:** [Steam store](https://store.steampowered.com/app/12150) · [technical notes](docs/games/12150-max-payne-2.md) · [report how it worked on your Deck](https://github.com/evertonfxavier/skip-launcher/issues/new?template=deck_report.yml&title=%5BDeck+report%5D+Max+Payne+2%3A+The+Fall+of+Max+Payne)
 
 </details>
 
 ## Not on the list?
 
-Only games whose launcher window can be skipped without touching the game's files are accepted. Games with anti-cheat or online ranked play are out of scope.
+- **Request it:** [open a game request](https://github.com/evertonfxavier/skip-launcher/issues/new?template=game_request.yml&title=%5BGame+request%5D+). Say what window opens before the game and whether it needs the mouse.
+- **Add it:** [docs/adding-a-game.md](docs/adding-a-game.md) walks through it, and `python3 tools/scaffold_game.py` creates the starting files.
+- **Only offline games, please.** Games with anti-cheat or online ranked play are out of scope: changing how they start can get accounts banned.

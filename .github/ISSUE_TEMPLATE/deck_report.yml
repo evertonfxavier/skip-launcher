@@ -1,0 +1,47 @@
+name: Deck report
+description: Tell us how a supported game behaved on your Steam Deck (works, partly, or broken)
+title: "[Deck report] "
+labels: ["report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the most valuable thing you can do: nobody can confirm that a game starts and keeps its settings without playing it.
+        A short note is enough.
+  - type: input
+    id: game
+    attributes:
+      label: Game
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version
+      placeholder: "0.2.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: skip
+    attributes:
+      label: Did the game start straight into the game, with no launcher window?
+      options: ["Yes", "No, the window still opened", "It did not start", "I did not try this"]
+    validations:
+      required: true
+  - type: dropdown
+    id: settings
+    attributes:
+      label: Did a setting you changed in the plugin take effect in the game?
+      options: ["Yes", "No", "Only some", "I did not try this"]
+    validations:
+      required: true
+  - type: dropdown
+    id: restore
+    attributes:
+      label: Did "Put the original settings back" work?
+      options: ["Yes", "No", "I did not try this"]
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: The setting you changed, what you saw, a screenshot.

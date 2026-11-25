@@ -6,7 +6,7 @@
 | Steam appid / install dir | 12140 / `Max Payne` (build 252034, internal library) |
 | Skip | launch option `%command% -nodialog`: **proven by hand on the Deck (2026-11-25)**, the game starts without the dialog |
 | Settings | Wine registry (`user.reg` of the prefix), edited as text by `regutil.py`; profile `profiles/max_payne.py`, revision 1 |
-| Status | profile written and tested on synthetic files; **not installed on the Deck yet** |
+| Status | skip proven by hand on the Deck; settings tested on synthetic files and on a copy of a real `user.reg`; the plugin panel is installed (v0.2.x) but changing a setting and seeing the game obey it is **not confirmed yet** |
 | Summary | Starts Max Payne straight into the game, without its startup dialog, and lets you change the resolution and the gameplay options (auto-aim, auto weapon select, bullet time aid, crosshair, tips) from the plugin with a controller. |
 | Support level | partly confirmed |
 
@@ -19,8 +19,8 @@
   dialog (resolution, driver, HW acceleration, ...). So the Batman trick (rewrite the exe in Steam's command) does not apply.
 - The exe knows the command-line words `nodialog` and `skipstartup` (next to `developer`, `window`, `profile`, `screenshot`
   in its option table). `nodialog` is the community's flag to start without the startup dialog and with the last saved
-  settings; `skipstartup` skips the intro movies. **Not proven here**: the user has to try `%command% -nodialog` on the Deck.
-- Idea for the skip: launch option `%command% -nodialog` (add only that text, remove only that text; other options stay).
+  settings; `skipstartup` skips the intro movies. **Proven by hand**: a player set `%command% -nodialog` on a Steam Deck (2026-11-25) and the game started straight in.
+- The skip is the launch option `%command% -nodialog` (the plugin adds only that text and removes only that text; other options stay).
 
 ## Where the dialog keeps its choices
 Wine registry of the prefix, `compatdata/12140/pfx/user.reg` (plain text, section names with doubled backslashes), key

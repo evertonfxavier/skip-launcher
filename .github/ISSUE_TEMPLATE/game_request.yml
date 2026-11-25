@@ -1,0 +1,50 @@
+name: Game request
+description: Ask for support for a game whose launcher window gets in the way (or write down what you found about it)
+title: "[Game request] "
+labels: ["game request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Each launcher keeps its choices somewhere different, so every game needs its own profile. Requests are welcome; the more
+        you tell us, the sooner somebody can pick it up. Check [SUPPORTED_GAMES.md](https://github.com/evertonfxavier/skip-launcher/blob/main/SUPPORTED_GAMES.md) first.
+  - type: input
+    id: game
+    attributes:
+      label: Game name
+    validations:
+      required: true
+  - type: input
+    id: appid
+    attributes:
+      label: Steam app id
+      description: The number in the store URL (store.steampowered.com/app/**12345**).
+    validations:
+      required: true
+  - type: textarea
+    id: window
+    attributes:
+      label: What window opens before the game?
+      description: What it shows (resolution, quality, controls, "Play"), whether it needs the mouse, and what the Steam "Play" button starts.
+    validations:
+      required: true
+  - type: dropdown
+    id: online
+    attributes:
+      label: Does the game have anti-cheat or online ranked play?
+      description: Changing the start-up or settings of such games can get accounts banned, so they are out of scope.
+      options: ["No, single-player or co-op only", "Yes", "I do not know"]
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: What you know about it (optional)
+      description: The launcher's file name, where its settings live (a .ini file, the registry), command-line switches the game accepts. Never attach game files.
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Can you help?
+      options:
+        - label: I can test a build on my Steam Deck
+        - label: I can look at the game's files (see docs/adding-a-game.md)

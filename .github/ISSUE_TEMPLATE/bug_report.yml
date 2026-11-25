@@ -1,0 +1,61 @@
+name: Bug report
+description: Something does not work as expected (the panel, a switch, a setting, a game that broke)
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. **If a game will not start**, first turn off *Skip the launcher window* for it and press
+        *Put the original settings back* in the plugin, then fill this in.
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version
+      description: Shown in Decky's plugin list, or the name of the zip you installed.
+      placeholder: "0.2.1"
+    validations:
+      required: true
+  - type: input
+    id: game
+    attributes:
+      label: Game
+      description: The game and, if you know it, the Steam build number (Steam, game, Properties, Updates). Write "none" if it is not about a game.
+      placeholder: "Max Payne, build 252034"
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: And what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Skip Launcher
+        2. Pick the game, turn on "Skip the launcher window"
+        3. ...
+  - type: textarea
+    id: launch-options
+    attributes:
+      label: The game's launch options (optional)
+      description: Steam, game, Properties, General, Launch options. Remove anything private first.
+      render: text
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: |
+        In Desktop Mode, open Konsole and run:
+        `tail -n 80 "$(ls -t ~/homebrew/logs/Skip\ Launcher/*.log | head -1)"`
+        and paste the output. It contains no personal data.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before sending
+      options:
+        - label: I read the [FAQ](https://github.com/evertonfxavier/skip-launcher/blob/main/docs/faq.md)
+        - label: This game does not use anti-cheat or online ranked play

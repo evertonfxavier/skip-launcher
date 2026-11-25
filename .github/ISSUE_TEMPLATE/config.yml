@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Read the FAQ first
+    url: https://github.com/evertonfxavier/skip-launcher/blob/main/docs/faq.md
+    about: Most questions (how to undo a change, what the plugin touches, why a game is greyed out) are answered here.
+  - name: Report a security problem privately
+    url: https://github.com/evertonfxavier/skip-launcher/security/advisories/new
+    about: Anything that could damage a game or its settings, or harm a user. Please do not open a public issue.
