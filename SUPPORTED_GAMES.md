@@ -21,8 +21,8 @@ Whatever the level: no game file is touched to skip the launcher (only the launc
 | Game | Steam ID | Skips with | Settings | Support | Technical notes |
 |------|----------|-------|----------|---------|-----------------|
 | **Batman: Arkham Asylum GOTY Edition** | [35140](https://store.steampowered.com/app/35140) | `BmLauncher.exe` | 10 | ✅ confirmed | [notes](docs/games/35140-batman-arkham-asylum.md) |
-| **Max Payne** | [12140](https://store.steampowered.com/app/12140) | `-nodialog` | 6 | 🟡 partly confirmed | [notes](docs/games/12140-max-payne.md) |
-| **Max Payne 2: The Fall of Max Payne** | [12150](https://store.steampowered.com/app/12150) | `-nodialog` | 6 | 🟡 partly confirmed | [notes](docs/games/12150-max-payne-2.md) |
+| **Max Payne** | [12140](https://store.steampowered.com/app/12140) | `-nodialog` | 6 | ✅ confirmed | [notes](docs/games/12140-max-payne.md) |
+| **Max Payne 2: The Fall of Max Payne** | [12150](https://store.steampowered.com/app/12150) | `-nodialog` | 6 | ✅ confirmed | [notes](docs/games/12150-max-payne-2.md) |
 
 ## Details per game
 
@@ -45,7 +45,7 @@ Starts Batman straight into the game, without the mouse-only launcher window, an
 </details>
 
 <details>
-<summary><b>Max Payne (12140)</b> · 🟡 partly confirmed</summary>
+<summary><b>Max Payne (12140)</b> · ✅ confirmed</summary>
 
 Starts Max Payne straight into the game, without its startup dialog, and lets you change the resolution and the gameplay options (auto-aim, auto weapon select, bullet time aid, crosshair, tips) from the plugin with a controller.
 
@@ -54,13 +54,13 @@ Starts Max Payne straight into the game, without its startup dialog, and lets yo
 - **Video settings:** Resolution
 - **Game settings:** Auto-aim, Auto weapon select, Bullet time aid, Crosshair, Tips
 - **Settings file:** the Windows registry of the game's Proton prefix (`user.reg`)
-- **Not confirmed yet:** That the game applies a resolution written by the plugin (the player proved the skip, not the settings); the audio, gamma, LOD and driver values are not offered because their scale is not known. That Wine keeps the edited `user.reg` (the plugin edits it only when no process of the prefix is alive).
+- **Not confirmed yet:** The audio, gamma, LOD and driver values (not offered: their scale is not known).
 - **Links:** [Steam store](https://store.steampowered.com/app/12140) · [technical notes](docs/games/12140-max-payne.md) · [report how it worked on your Deck](https://github.com/evertonfxavier/skip-launcher/issues/new?template=deck_report.yml&title=%5BDeck+report%5D+Max+Payne)
 
 </details>
 
 <details>
-<summary><b>Max Payne 2: The Fall of Max Payne (12150)</b> · 🟡 partly confirmed</summary>
+<summary><b>Max Payne 2: The Fall of Max Payne (12150)</b> · ✅ confirmed</summary>
 
 Starts Max Payne 2 straight into the game, without its startup dialog, and lets you change the resolution and the gameplay options (auto-aim, auto weapon select, bullet time aid, tips, subtitles) from the plugin with a controller.
 
@@ -69,7 +69,7 @@ Starts Max Payne 2 straight into the game, without its startup dialog, and lets 
 - **Video settings:** Resolution
 - **Game settings:** Auto-aim, Auto weapon select, Bullet time aid, Tips, Subtitles
 - **Settings file:** the Windows registry of the game's Proton prefix (`user.reg`)
-- **Not confirmed yet:** That the game applies a resolution written by the plugin (the player proved the skip, not the settings). The crosshair (`Crosshair Index`, values unknown) and the video quality values (gamma, LOD, bits per pixel, driver) are not offered.
+- **Not confirmed yet:** The crosshair (`Crosshair Index`, values unknown) and the video quality values (gamma, LOD, bits per pixel, driver) are not offered.
 - **Links:** [Steam store](https://store.steampowered.com/app/12150) · [technical notes](docs/games/12150-max-payne-2.md) · [report how it worked on your Deck](https://github.com/evertonfxavier/skip-launcher/issues/new?template=deck_report.yml&title=%5BDeck+report%5D+Max+Payne+2%3A+The+Fall+of+Max+Payne)
 
 </details>

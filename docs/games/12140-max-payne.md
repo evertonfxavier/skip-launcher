@@ -6,12 +6,11 @@
 | Steam appid / install dir | 12140 / `Max Payne` (build 252034, internal library) |
 | Skip | launch option `%command% -nodialog`: **proven by hand on the Deck (2026-11-25)**, the game starts without the dialog |
 | Settings | Wine registry (`user.reg` of the prefix), edited as text by `regutil.py`; profile `profiles/max_payne.py`, revision 1 |
-| Status | skip proven by hand on the Deck; settings tested on synthetic files and on a copy of a real `user.reg`; the plugin panel is installed (v0.2.x) but changing a setting and seeing the game obey it is **not confirmed yet** |
+| Status | **confirmed on a Steam Deck by a player (2026-11-25)**: the game starts without its dialog and the plugin's settings work; the registry edit is also covered by tests on synthetic files and on a copy of a real `user.reg` |
 | Summary | Starts Max Payne straight into the game, without its startup dialog, and lets you change the resolution and the gameplay options (auto-aim, auto weapon select, bullet time aid, crosshair, tips) from the plugin with a controller. |
-| Support level | partly confirmed |
+| Support level | confirmed |
 
-- NOT verified: that the game applies a resolution written by the plugin (the player proved the skip, not the settings); the audio, gamma, LOD and driver values are not offered because their scale is not known.
-- NOT verified: that Wine keeps the edited `user.reg` (the plugin edits it only when no process of the prefix is alive).
+- NOT verified: the audio, gamma, LOD and driver values (not offered: their scale is not known).
 
 ## How the game starts
 - There is **no separate launcher exe**. `maxpayne.exe` (6.3 MB) and `testapp.exe` (5.0 MB, a second build of the same
