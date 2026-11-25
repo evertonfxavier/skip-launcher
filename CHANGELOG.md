@@ -4,6 +4,8 @@ All notable changes to this project are documented here, in the [Keep a Changelo
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-25
+
 ## [0.2.1] - 2026-11-25
 - First public release, as its own repository: README (English and Brazilian Portuguese), contributing guide, code of conduct, security
   policy, issue forms, a pull-request template, documentation (FAQ, architecture, safety rules, how to add a game), a scaffold tool for
@@ -22,5 +24,6 @@ All notable changes to this project are documented here, in the [Keep a Changelo
 - First version: Batman: Arkham Asylum GOTY Edition. Skip the launcher window from the plugin and change its settings
   (resolution, fullscreen, V-Sync, anti-aliasing, detail, effects, ambient occlusion, motion blur, PhysX, subtitles).
 
-[Unreleased]: https://github.com/evertonfxavier/skip-launcher/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/evertonfxavier/skip-launcher/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/evertonfxavier/skip-launcher/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/evertonfxavier/skip-launcher/releases/tag/v0.2.1

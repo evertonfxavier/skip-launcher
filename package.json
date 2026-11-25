@@ -1,6 +1,6 @@
 {
   "name": "skip-launcher",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Decky plugin that starts games straight into the game, skipping their Windows launcher window, and keeps that window's settings in the plugin",
   "homepage": "https://github.com/evertonfxavier/skip-launcher",
   "repository": {
